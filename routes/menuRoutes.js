@@ -4,12 +4,15 @@ const menuController = require("../controllers/menuController");
 // Routes
 const menuRouter = express.Router();
 
-menuRouter.param("id", menuController.checkId);
+// menuRouter.param("id", menuController.checkId);
 
+menuRouter
+  .route("/popular-menu")
+  .get(menuController.aliasPopularMenus, menuController.getAllMenus);
 menuRouter
   .route("/")
   .get(menuController.getAllMenus)
-  .post(menuController.checkBody, menuController.createMenu);
+  .post(menuController.createMenu);
 
 menuRouter
   .route("/:id")

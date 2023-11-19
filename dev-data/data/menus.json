@@ -1,58 +1,41 @@
 [
   {
-    "id": 1,
-    "name": "Ramen",
-    "price": "10",
-    "description": "Ramen is a Japanese dish. It consists of Chinese-style wheat noodles served in a meat or (occasionally) fish-based broth, often flavored with soy sauce or miso, and uses toppings such as sliced pork (叉焼 chāshū), dried seaweed (海苔 nori), menma (麺麻), and green onions (葱 negi). Nearly every region in Japan has its own variation of ramen, from the tonkotsu (pork bone broth) ramen of Kyushu to the miso ramen of Hokkaido.",
-    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fthecozycook.com%2Fhomemade-ramen%2F&psig=AOvVaw3BZumrKV3npaf8tje1MAdT&ust=1700366699166000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCICu2trVzIIDFQAAAAAdAAAAABAE"
+    "name": "からみそラーメン",
+    "price": 850,
+    "imageCover": "ramen_image.jpg",
+    "description": "山形生まれの「からみそラーメン」をふくろうが名古屋の地に合わせて独自にアレンジ。魚介の出汁が効いたマイルドなみそベースのスープに、門外不出のからみそを少しずつ溶かしながら食べる「からみそラーメン」。ヒリリと辛く味わいを変化させると共に、コクと深みを持たせるのが特徴です。ホロリと口の中で溶けるチャーシューとの相性も絶妙です。ヒリリとした辛味が追加され「味の変化」をお楽しみいただけます.",
+    "popular": true
   },
   {
-    "id": 2,
-    "name": "Sushi",
-    "price": "12",
-    "description": "Sushi is a Japanese dish of prepared vinegared rice (鮨飯, sushi-meshi), usually with some sugar and salt, accompanying a variety of ingredients (ネタ, neta), such as seafood, often raw, and vegetables. Styles of sushi and its presentation vary widely, but the key ingredient is sushi rice, also referred to as shari (しゃり), or sumeshi (酢飯).",
-    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FSushi&psig=AOvVaw1H5nF1vrW7hGVjimF70bYT&ust=1700366715830000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCOivxOLVzIIDFQAAAAAdAAAAABAE"
+    "name": "からみそラーメン 贅沢のせ",
+    "price": 1050,
+    "imageCover": "ramen_luxury_image.jpg",
+    "description": "ふくろうの看板メニューであるからみそラーメンに、チャーシュー・半熟味玉・海苔・メンマ・ネギを追加した、欲張りな全部乗せです.",
+    "popular": true
   },
   {
-    "id": 3,
-    "name": "Sashimi",
-    "price": "15",
-    "description": "Sashimi (Japanese: 刺身, pronounced [saɕi̥miꜜ]; English: /səˈʃiːmiː/ sə-SHEE-mee) is a Japanese delicacy consisting of very fresh raw meat or fish sliced into thin pieces and often eaten with soy sauce. The word sashimi means \"pierced body\", i.e. \"刺身 = sashimi, where 刺し = sashi (pierced, stuck) and 身 = mi (body, meat).\"",
-    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fdrizzlemeskinny.com%2Fnigiri-vs-sashimi-whats-the-difference%2F&psig=AOvVaw1owLL-s-RTD1NvW4ym32QJ&ust=1700366728466000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCNCTvujVzIIDFQAAAAAdAAAAABAE"
+    "name": "からみそラーメン チャーシュー盛り",
+    "price": 950,
+    "imageCover": "ramen_chashu_image.jpg",
+    "description": "チャーシューのトッピングをご注文で、どんぶりを覆い尽くしたホロホロチャーシューの花盛りをご堪能いただけます。ふくろうメニュー1、2を争うゴージャスなラーメンです.",
+    "popular": true
   },
   {
-    "id": 4,
-    "name": "Tempura",
-    "price": "8",
-    "description": "Tempura (天ぷら or 天麩羅, tenpura, [tẽ̞mpɯᵝra]) is a typical Japanese dish usually consisting of seafood, meat, and vegetables that have been battered and deep fried.",
-    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FTempura&psig=AOvVaw1Dhqw4SylvvBxoKQeXsaK9&ust=1700366742808000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCIi3pe_VzIIDFQAAAAAdAAAAABAE"
+    "name": "からみそまぜそば",
+    "price": 900,
+    "imageCover": "maze_soba_image.jpg",
+    "description": "「からみそラーメン」の優しいみそダレと違い、パンチの効いたみそダレで仕上げた少し甘めの「からみそまぜそば」。まずは「からみそ」を端によけて、全体を豪快にかき混ぜた後、少しずつ加えながら食べていただくのがオススメです。最後は嬉しい追い飯付き！"
   },
   {
-    "id": 5,
-    "name": "Fukuro Ramen",
-    "description": "This is fukuro ramen",
-    "price": "10",
-    "image": "Dipen"
+    "name": "みそ台湾まぜそば",
+    "price": 950,
+    "imageCover": "taiwan_maze_soba_image.jpg",
+    "description": "からみそラーメンふくろう新名物「みそ台湾まぜそば」はふくろうオリジナル台湾ミンチと風味豊かなたくさんの具材を組み合わせ、パンチの効いた少し甘めなみそダレで仕上げた辛すぎない旨辛なオリジナルまぜそばです。豪快にかき混ぜて召し上がれ！"
   },
   {
-    "id": 6,
-    "name": "Fukuro Ramensdssdsdsd",
-    "description": "This is fukuro ramen",
-    "price": "10",
-    "image": "Dipen"
-  },
-  {
-    "id": 7,
-    "name": "Fukuro Ramensdssdsdsd",
-    "description": "This is fukuro ramen",
-    "price": "10",
-    "image": "Dipen"
-  },
-  {
-    "id": 8,
-    "name": "Hello",
-    "description": "This is fukuro ramen",
-    "price": "10",
-    "image": "Dipen"
+    "name": "中華そば",
+    "price": 800,
+    "imageCover": "chuka_soba_image.jpg",
+    "description": "東北地方の「中華そば」特有の透き通ったしょうゆスープにふくろうのエッセンスを加え「昔ながらにして、次世代の味」を表現。麺はあっさりスープが絡むよう、ふくろう謹製の太麺を「平打ち」し融合させました."
   }
 ]
