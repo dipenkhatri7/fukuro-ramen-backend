@@ -9,6 +9,9 @@ const menuRouter = express.Router();
 menuRouter
   .route("/popular-menu")
   .get(menuController.aliasPopularMenus, menuController.getAllMenus);
+
+menuRouter.route("/menu-stats").get(menuController.getMenuStats);
+
 menuRouter
   .route("/")
   .get(menuController.getAllMenus)

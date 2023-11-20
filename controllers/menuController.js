@@ -111,6 +111,7 @@ exports.createMenu = async (req, res) => {
   //   }
   // );
 };
+
 exports.updateMenu = async (req, res) => {
   try {
     const updatedMenu = await Menu.findByIdAndUpdate(req.params.id, req.body, {
@@ -138,6 +139,78 @@ exports.deleteMenu = async (req, res) => {
       status: "success",
       data: null,
     });
+  } catch (err) {
+    res.status(404).json({
+      status: "fail",
+      message: err,
+    });
+  }
+};
+
+exports.getMenuStats = async (req, res) => {
+  try {
+    const stats = await Menu.aggregate([
+      {
+        $match: { ratingAverage: { $gte: 4.5 } },
+      },
+      {
+        $group: {
+          _id: "$popular",
+          numMenus: { $sum: 1 },
+          numRatings: { $sum: "$ratingQuantity" },
+          avgRating: { $avg: "$ratingAverage" },
+          avgPrice: { $avg: "$price" },
+          minPrice: { $min: "$price" },
+          maxPrice: { $max: "$price" },
+        },
+      },
+      {
+        $sort: { avgPrice: 1 },
+      },
+      // {
+      //   $match: { _id: { $ne: false } },
+      // },
+    ]);
+    res.status(200).json({
+      status: "success",
+      data: {
+        stats,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "fail",
+      message: err,
+    });
+  }
+};
+
+exports.getMonthlyPlan = async (req, res) => {
+  try {
+    const menuPlan = await Menu.aggregate([
+      {
+        $unwind: "$menuPlan", // deconstructs an array field from the input documents to output a document for each element
+      },
+      {
+        $group: {
+          _id: { $month: "$menuPlan.date" },
+          numMenuStarts: { $sum: 1 },
+          menus: { $push: "$name" },
+        },
+      },
+      {
+        $addFields: { month: "$_id" },
+      },
+      {
+        $project: { _id: 0 },
+      },
+      {
+        $sort: { numMenuStarts: -1 },
+      },
+      {
+        $limit: 12,
+      },
+    ]);
   } catch (err) {
     res.status(404).json({
       status: "fail",
