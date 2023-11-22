@@ -8,10 +8,9 @@ class APIFeatures {
     const queryObj = { ...this.queryString };
     const excludedFields = ["page", "limit", "sort", "fields"];
     excludedFields.forEach((el) => delete queryObj[el]);
-
     // Advanced Filtering: Menu.findOne({price: {$lte: 10}})
     let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(lte|gte|gt|lt)\b/g, (match) => `$${match}`);
+    queryStr = queryStr.replace(/\b(lte|gte|lt|gt)\b/g, (match) => `$${match}`);
     // console.log(queryStr);
     this.query = this.query.find(JSON.parse(queryStr));
     return this;

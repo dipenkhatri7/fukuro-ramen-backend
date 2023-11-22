@@ -153,6 +153,7 @@ exports.getMenuStats = async (req, res) => {
       {
         $match: { ratingAverage: { $gte: 4.5 } },
       },
+
       {
         $group: {
           _id: "$popular",
@@ -165,7 +166,13 @@ exports.getMenuStats = async (req, res) => {
         },
       },
       {
+        $addFields: { isPopular: "$_id" },
+      },
+      {
         $sort: { avgPrice: 1 },
+      },
+      {
+        $project: { _id: 0 },
       },
       // {
       //   $match: { _id: { $ne: false } },
