@@ -3,7 +3,8 @@ const app = express();
 const morgan = require("morgan");
 const menuRouter = require("./routes/menuRoutes");
 const userRouter = require("./routes/userRoutes");
-
+const AppError = require("./utils/appError");
+const globalErrorHandler = require("./controllers/errorController");
 // This is a middleware: Middleware is a function that can modify the incoming request data. Called middleware because it sits in the middle of the request and response cycle.
 app.use(express.json());
 if (process.env.NODE_ENV === "development") {
@@ -23,19 +24,13 @@ app.all("*", (req, res, next) => {
   //   status: "fail",
   //   message: `Can't find ${req.originalUrl} on this server`,
   // });
-  const err = new Error(`Can't find ${req.originalUrl} on this server`);
-  err.status = "fail";
-  err.statusCode = 404;
-  next(err);
+  // const err = new Error(`Can't find ${req.originalUrl} on this server`);
+  // err.status = "fail";
+  // err.statusCode = 404;
+  // next(err);
+  next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
 });
 
-app.use((err, req, res, next) => {
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || "error";
-  res.status(err.statusCode).json({
-    status: err.status,
-    message: err.message,
-  });
-});
+app.use(globalErrorHandler);
 
 module.exports = app;

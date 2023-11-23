@@ -51,31 +51,31 @@ const menuSchema = new mongoose.Schema(
     // },
   },
   {
-    toJSON: { virtuals: true }, // This will allow virtual properties to be shown when outputting JSON data.
-    toObject: { virtuals: true }, // This will allow virtual properties to be shown when outputting object data.
+    // toJSON: { virtuals: true }, // This will allow virtual properties to be shown when outputting JSON data.
+    // toObject: { virtuals: true }, // This will allow virtual properties to be shown when outputting object data.
   }
 );
 
 // virtual property related to price in country currency where the user is located
-menuSchema.virtual("priceInCurrentCountry").get(function () {
-  console.log("Inside virtual property");
-  // console.log(this);
-  // console.log(req.user.country);
-  // const countryCurrency = req.user.countryCurrency;
-  return this.price * 1;
-});
+// menuSchema.virtual("priceInCurrentCountry").get(function () {
+//   console.log("Inside virtual property");
+//   // console.log(this);
+//   // console.log(req.user.country);
+//   // const countryCurrency = req.user.countryCurrency;
+//   return this.price * 1;
+// });
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
 
 menuSchema.pre("save", function (next) {
   console.log("Inside pre save middleware");
-  console.log(this);
+  // console.log(this);
   next();
 });
 
 menuSchema.post("save", function (doc, next) {
   console.log("Inside post save middleware");
-  console.log(doc);
+  // console.log(doc);
   next();
 });
 
@@ -88,7 +88,7 @@ menuSchema.pre(/^find/, function (next) {
 
 menuSchema.post(/^find/, function (docs, next) {
   console.log(`Query took ${Date.now() - this.start} milliseconds`);
-  console.log(docs);
+  // console.log(docs);
   next();
 });
 
@@ -97,7 +97,7 @@ menuSchema.post(/^find/, function (docs, next) {
 menuSchema.pre("aggregate", function (next) {
   console.log("Inside pre aggregate middleware");
   // this.pipeline().unshift({ $match: { popular: { $ne: true } } }); // unshift() adds an element to the beginning of an array and returns the new length of the array.
-  console.log(this.pipeline());
+  // console.log(this.pipeline());
   next();
 });
 

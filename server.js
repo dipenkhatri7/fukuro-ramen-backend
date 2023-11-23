@@ -1,5 +1,15 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+
+// Uncaught exception error
+process.on("uncaughtException", (err) => {
+  console.log(err.name, err.message);
+  console.log("Uncaught exception! Shutting down...");
+  server.close(() => {
+    process.exit(1);
+  });
+});
+
 dotenv.config({ path: "./config.env" }); // This will read the config.env file and save the environment variables in the process.env object. This object is a global object that is available in all the modules.
 const app = require("./app");
 
@@ -18,6 +28,15 @@ mongoose.connect(DB, {}).then((connection) => {
 // console.log(process.env);
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log("Listening");
+});
+
+// Unhandled rejection error
+process.on("unhandledRejection", (err) => {
+  console.log(err.name, err.message);
+  console.log("Unhandled rejection! Shutting down...");
+  server.close(() => {
+    process.exit(1);
+  });
 });

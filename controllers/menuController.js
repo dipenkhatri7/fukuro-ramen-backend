@@ -1,5 +1,7 @@
 const Menu = require("../models/menuModel");
 const APIFeatures = require("../utils/apiFeatures");
+const catchAsync = require("../utils/catchAsync");
+const AppError = require("../utils/appError");
 // const menus = JSON.parse(
 //   fs.readFileSync(`${__dirname}/../dev-data/data/menus.json`)
 // );
@@ -33,66 +35,48 @@ exports.aliasPopularMenus = async (req, res, next) => {
   next();
 };
 
-exports.getAllMenus = async (req, res) => {
-  try {
-    const features = new APIFeatures(Menu.find(), req.query)
-      .filter()
-      .sort()
-      .limitFields()
-      .paginate();
-    const menus = await features.query;
-    res.status(200).json({
-      status: "success",
-      requestedAt: req.requestTime,
-      results: menus.length,
-      data: {
-        menus,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err.message,
-    });
-  }
-};
+exports.getAllMenus = catchAsync(async (req, res, next) => {
+  const features = new APIFeatures(Menu.find(), req.query)
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
+  const menus = await features.query;
 
-exports.getMenu = async (req, res) => {
+  res.status(200).json({
+    status: "success",
+    requestedAt: req.requestTime,
+    results: menus.length,
+    data: {
+      menus,
+    },
+  });
+});
+
+exports.getMenu = catchAsync(async (req, res, next) => {
   // Menu.findOne({ _id: req.params.id });
-  try {
-    const menu = await Menu.findById(req.params.id);
-    res.status(200).json({
-      status: "success",
-      data: {
-        menu,
-      },
-    });
-  } catch (err) {
-    return res.status(404).json({
-      status: "fail",
-      message: err,
-    });
+  const menu = await Menu.findById(req.params.id);
+  if (!menu) {
+    return next(new AppError("No tour found with that ID", 404));
   }
-};
+  res.status(200).json({
+    status: "success",
+    data: {
+      menu,
+    },
+  });
+});
 
-exports.createMenu = async (req, res) => {
+exports.createMenu = catchAsync(async (req, res, next) => {
   // const newMenu = new Menu({});
   // newMenu.save();
-  try {
-    const newMenu = await Menu.create(req.body);
-    res.status(201).json({
-      status: "success",
-      data: {
-        newMenu,
-      },
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "fail",
-      message: err,
-    });
-  }
-
+  const menu = await Menu.create(req.body);
+  res.status(201).json({
+    status: "success",
+    data: {
+      menu,
+    },
+  });
   // console.log(req.body); // body is the property of request object that contains the data that is sent by the client and is available only when we use middleware express.json()
   // const newId = menus[menus.length - 1].id + 1;
   // const newMenus = Object.assign({ id: newId }, req.body);
@@ -110,118 +94,96 @@ exports.createMenu = async (req, res) => {
   //     });
   //   }
   // );
-};
+});
 
-exports.updateMenu = async (req, res) => {
-  try {
-    const updatedMenu = await Menu.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-    res.status(200).json({
-      status: "success",
-      data: {
-        updatedMenu,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err,
-    });
+exports.updateMenu = catchAsync(async (req, res, next) => {
+  const menu = await Menu.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  if (!menu) {
+    return next(new AppError("No tour found with that ID", 404));
   }
-};
+  res.status(200).json({
+    status: "success",
+    data: {
+      menu,
+    },
+  });
+});
 
-exports.deleteMenu = async (req, res) => {
-  try {
-    await Menu.findByIdAndDelete(req.params.id);
-    res.status(204).json({
-      status: "success",
-      data: null,
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err,
-    });
+exports.deleteMenu = catchAsync(async (req, res, next) => {
+  const menu = await Menu.findByIdAndDelete(req.params.id);
+  if (!menu) {
+    return next(new AppError("No tour found with that ID", 404));
   }
-};
+  res.status(204).json({
+    status: "success",
+    data: null,
+  });
+});
 
-exports.getMenuStats = async (req, res) => {
-  try {
-    const stats = await Menu.aggregate([
-      {
-        $match: { ratingAverage: { $gte: 4.5 } },
-      },
+exports.getMenuStats = catchAsync(async (req, res, next) => {
+  const stats = await Menu.aggregate([
+    {
+      $match: { ratingAverage: { $gte: 4.5 } },
+    },
 
-      {
-        $group: {
-          _id: "$popular",
-          numMenus: { $sum: 1 },
-          numRatings: { $sum: "$ratingQuantity" },
-          avgRating: { $avg: "$ratingAverage" },
-          avgPrice: { $avg: "$price" },
-          minPrice: { $min: "$price" },
-          maxPrice: { $max: "$price" },
-        },
+    {
+      $group: {
+        _id: "$popular",
+        numMenus: { $sum: 1 },
+        numRatings: { $sum: "$ratingQuantity" },
+        avgRating: { $avg: "$ratingAverage" },
+        avgPrice: { $avg: "$price" },
+        minPrice: { $min: "$price" },
+        maxPrice: { $max: "$price" },
       },
-      {
-        $addFields: { isPopular: "$_id" },
-      },
-      {
-        $sort: { avgPrice: 1 },
-      },
-      {
-        $project: { _id: 0 },
-      },
-      // {
-      //   $match: { _id: { $ne: false } },
-      // },
-    ]);
-    res.status(200).json({
-      status: "success",
-      data: {
-        stats,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err,
-    });
-  }
-};
+    },
+    {
+      $addFields: { isPopular: "$_id" },
+    },
+    {
+      $sort: { avgPrice: 1 },
+    },
+    {
+      $project: { _id: 0 },
+    },
+    // {
+    //   $match: { _id: { $ne: false } },
+    // },
+  ]);
+  res.status(200).json({
+    status: "success",
+    data: {
+      stats,
+    },
+  });
+});
 
-exports.getMonthlyPlan = async (req, res) => {
-  try {
-    const menuPlan = await Menu.aggregate([
-      {
-        $unwind: "$menuPlan", // deconstructs an array field from the input documents to output a document for each element
+exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
+  const menuPlan = await Menu.aggregate([
+    {
+      $unwind: "$menuPlan", // deconstructs an array field from the input documents to output a document for each element
+    },
+    {
+      $group: {
+        _id: { $month: "$menuPlan.date" },
+        numMenuStarts: { $sum: 1 },
+        menus: { $push: "$name" },
       },
-      {
-        $group: {
-          _id: { $month: "$menuPlan.date" },
-          numMenuStarts: { $sum: 1 },
-          menus: { $push: "$name" },
-        },
-      },
-      {
-        $addFields: { month: "$_id" },
-      },
-      {
-        $project: { _id: 0 },
-      },
-      {
-        $sort: { numMenuStarts: -1 },
-      },
-      {
-        $limit: 12,
-      },
-    ]);
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err,
-    });
-  }
-};
+    },
+    {
+      $addFields: { month: "$_id" },
+    },
+    {
+      $project: { _id: 0 },
+    },
+    {
+      $sort: { numMenuStarts: -1 },
+    },
+    {
+      $limit: 12,
+    },
+  ]);
+});
