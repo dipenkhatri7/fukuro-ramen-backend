@@ -1,6 +1,6 @@
 const express = require("express");
 const menuController = require("../controllers/menuController");
-
+const authController = require("../controllers/authController");
 // Routes
 const menuRouter = express.Router();
 
@@ -14,7 +14,7 @@ menuRouter.route("/menu-stats").get(menuController.getMenuStats);
 
 menuRouter
   .route("/")
-  .get(menuController.getAllMenus)
+  .get(authController.protect, menuController.getAllMenus)
   .post(menuController.createMenu);
 
 menuRouter
