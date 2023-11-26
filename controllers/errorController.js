@@ -1,22 +1,5 @@
 const AppError = require("../utils/appError");
 
-const handleCasteErrorDB = (err) => {
-  const message = `Invalid ${err.path}: ${err.value}`;
-  return new AppError(message, 400);
-};
-
-const handleDuplicateFieldsDB = (err) => {
-  const value = err.message.match(/(["'])(\\?.)*?\1/)[0];
-  console.log(value);
-  const message = `Duplicate field value: ${value}. Please use another value!`;
-  return new AppError(message, 400);
-};
-
-const handleValidationErrorDB = (err) => {
-  const errors = Object.values(err.errors).map((error) => error.message); // here Object.values() will return an array of all the values of the object. if we just did err.errors then it would return an object of all the errors.
-  const message = `Invalid input data. ${errors.join(". ")}`;
-  return new AppError(message, 400);
-};
 const sendErrorDev = (err, res) => {
   res.status(err.statusCode).json({
     status: err.status,
@@ -25,6 +8,7 @@ const sendErrorDev = (err, res) => {
     stack: err.stack,
   });
 };
+
 const sendErrorProd = (err, res) => {
   // Operational, trusted error: send message to client
   if (err.isOperational) {
@@ -42,6 +26,25 @@ const sendErrorProd = (err, res) => {
     });
   }
 };
+
+const handleCasteErrorDB = (err) => {
+  const message = `Invalid ${err.path}: ${err.value}`;
+  return new AppError(message, 400);
+};
+
+const handleDuplicateFieldsDB = (err) => {
+  const value = err.message.match(/(["'])(\\?.)*?\1/)[0];
+  console.log(value);
+  const message = `Duplicate field value: ${value}. Please use another value!`;
+  return new AppError(message, 400);
+};
+
+const handleValidationErrorDB = (err) => {
+  const errors = Object.values(err.errors).map((error) => error.message); // here Object.values() will return an array of all the values of the object. if we just did err.errors then it would return an object of all the errors.
+  const message = `Invalid input data. ${errors.join(". ")}`;
+  return new AppError(message, 400);
+};
+
 const handleJWTError = () =>
   new AppError("Invalid token. Please log in again!", 401);
 

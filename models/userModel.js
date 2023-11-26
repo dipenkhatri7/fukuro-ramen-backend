@@ -48,11 +48,16 @@ const userSchema = new mongoose.Schema({
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
+  active: {
+    type: Boolean,
+    default: true,
+    select: false,
+  },
 });
 
 userSchema.pre("save", function (next) {
   if (!this.isModified("password") || this.isNew) return next();
-  this.passwordChangedAt = Date.now() - 1000; // To make sure the token is created after the password is changed in the database. 
+  this.passwordChangedAt = Date.now() - 1000; // To make sure the token is created after the password is changed in the database.
   next();
 });
 
@@ -61,6 +66,11 @@ userSchema.pre("save", async function (next) {
 
   this.password = await bcryptjs.hash(this.password, 14);
   this.passwordConfirm = undefined;
+  next();
+});
+
+userSchema.pre(/^find/, function (next) {
+  this.find({ active: { $ne: false } });
   next();
 });
 
