@@ -28,12 +28,13 @@ const createSendToken = (user, statusCode, res) => {
 
   res.status(statusCode).json({
     status: "Success",
-    token,
+    // token,
     data: {
       user,
     },
   });
 };
+
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
     name: req.body.name,
@@ -63,12 +64,15 @@ exports.login = catchAsync(async (req, res, next) => {
 exports.protect = catchAsync(async (req, res, next) => {
   let token;
   console.log(req.headers);
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    token = req.headers.authorization.split(" ")[1];
+  if (req.headers.cookie && req.headers.cookie.startsWith("jwt=")) {
+    token = req.headers.cookie.split("=")[1];
   }
+  // if (
+  //   req.headers.authorization &&
+  //   req.headers.authorization.startsWith("Bearer")
+  // ) {
+  //   token = req.headers.authorization.split(" ")[1];
+  // }
 
   // console.log(token);
 
@@ -106,7 +110,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   if (!user) {
     return next(new AppError("There is no user with this email address", 404));
   }
-  
+
   const resetToken = user.createPasswordResetToken();
   await user.save({ validateBeforeSave: false });
 

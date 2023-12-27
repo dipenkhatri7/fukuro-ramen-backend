@@ -18,6 +18,8 @@ userRouter.patch(
 userRouter.patch("/updateMe", authController.protect, userController.updateMe);
 userRouter.delete("/deleteMe", authController.protect, userController.deleteMe);
 
+userRouter.get("/user-points", userController.getUserPoints);
+
 userRouter
   .route("/")
   .get(userController.getAllUsers)

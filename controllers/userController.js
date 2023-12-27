@@ -18,6 +18,15 @@ exports.getAllUsers = catchAsync(async (req, res) => {
   });
 });
 
+exports.getUserPoints = catchAsync(async (req, res) => {
+  const user = "user"
+  console.log(user);
+  res.status(201).json({
+    status: "success",
+    points: user,
+  });
+});
+
 exports.getUser = (req, res) => {
   res.status(500).json({
     status: "Error",
