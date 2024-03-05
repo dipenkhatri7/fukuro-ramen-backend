@@ -24,10 +24,11 @@ if (process.env.NODE_ENV === "development") {
 
 // Limit requests from same API
 const limiter = rateLimit({
-  max: 1000,
+  max: 100,
   windowMs: 60 * 60 * 1000, // 1 hour
   message: "Too many requests from this IP, please try again in an hour!",
 });
+
 app.use("/api", limiter); // This is a middleware that will be applied to all the routes that start with /api
 
 // Body parser, reading data from body into req.body
