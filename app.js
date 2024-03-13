@@ -3,6 +3,7 @@ const app = express();
 const morgan = require("morgan");
 const menuRouter = require("./routes/menuRoutes");
 const userRouter = require("./routes/userRoutes");
+const configRouter = require("./routes/configRoutes");
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
 const rateLimit = require("express-rate-limit");
@@ -10,11 +11,13 @@ const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
+
 // This is a middleware: Middleware is a function that can modify the incoming request data. Called middleware because it sits in the middle of the request and response cycle.
 
 // Global Middleware
 
 // Set security HTTP headers (helmet). This will set some HTTP headers that will make our app more secure. Eg: It will set the HTTP header for XSS protection, it will set the HTTP header for not allowing the app to be loaded in a frame, etc.
+
 app.use(helmet());
 
 // Development logging
@@ -60,6 +63,7 @@ app.use((req, res, next) => {
 // Routes: Mounting the routers
 app.use("/api/v1/menus", menuRouter);
 app.use("/api/v1/users", userRouter); // Mounting a router on a route, this is called mounting. This means that all the routes that are defined in the userRouter will be prefixed with /api/v1/users
+app.use("/api/v1/config", configRouter);
 
 app.all("*", (req, res, next) => {
   // res.status(404).json({

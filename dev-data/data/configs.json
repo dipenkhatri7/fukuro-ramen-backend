@@ -1,0 +1,13 @@
+{
+  "appMinimumVersionAndroid": 10,
+  "appMinimumVersionIos": 11,
+  "maintenanceMode": false,
+  "defaultLocation": {
+    "latitude": "123.456",
+    "longitude": "789.012"
+  },
+  "demo": true,
+  "loyaltyPointExchangeRate": 2,
+  "loyaltyPointItemPurchasePoint": 20,
+  "loyaltyPoint": 100
+}
